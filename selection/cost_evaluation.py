@@ -117,6 +117,7 @@ class CostEvaluation:
         assert self.current_indexes == set()
 
     def _request_cache(self, query, indexes):
+        #用于减少cost的计算次数
         q_i_hash = (query, frozenset(indexes))
         if q_i_hash in self.relevant_indexes_cache:
             relevant_indexes = self.relevant_indexes_cache[q_i_hash]

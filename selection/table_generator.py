@@ -150,5 +150,8 @@ class TableGenerator:
                 and self.scale_factor != 0.001
             ):
                 raise Exception("Wrong TPCDS scale factor")
+        elif self.benchmark_name == "imdb":
+            self.directory = "./imdbquery"
+            self.create_table_statements_file = "dss.ddl"
         else:
             raise NotImplementedError("only tpch/ds implemented.")

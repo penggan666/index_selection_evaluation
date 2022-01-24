@@ -60,9 +60,10 @@ class IndexSelection:
     def _setup_config(self, config):
         dbms_class = DBMSYSTEMS[config["database_system"]]
         generating_connector = dbms_class(None, autocommit=True)
-        table_generator = TableGenerator(
-            config["benchmark_name"], config["scale_factor"], generating_connector
-        )
+        if config["benchmark_name"] == 'imdb':
+            table_generator = TableGenerator(config["benchmark_name"], config["scale_factor"], generating_connector,'imdb')
+        else:
+            table_generator = TableGenerator(config["benchmark_name"], config["scale_factor"], generating_connector)
         self.database_name = table_generator.database_name()
         self.database_system = config["database_system"]
         self.setup_db_connector(self.database_name, self.database_system)

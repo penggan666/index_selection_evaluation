@@ -154,5 +154,15 @@ class QueryGenerator:
                 self.make_command.append("OS=MACOS")
 
             self._generate_tpcds()
+        elif self.benchmark_name == "imdb":
+            self.directory="./imdbquery/query"
+            for queryname in self._files():
+                child = os.path.join('%s/%s' % ("./imdbquery/query", queryname))
+                sql = open(child, 'r', encoding='utf8')
+                sqltxt = sql.readlines()
+                sql.close()
+                sql = "".join(sqltxt)
+                sql = sql.replace('\n', ' ')
+                self.add_new_query(queryname,sql)
         else:
             raise NotImplementedError("only tpch/tpcds implemented.")
