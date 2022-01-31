@@ -66,6 +66,7 @@ class Index:
         return True
 
     def subsumes(self, other):
+        # 用于判断other是否是Index类型
         if not isinstance(other, Index):
             return False
         return self.columns[: len(other.columns)] == other.columns

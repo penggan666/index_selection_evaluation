@@ -36,6 +36,7 @@ def get_utilized_indexes(
 ):
     utilized_indexes_workload = set()
     query_details = {}
+    # zip是用于将query和对应的index进行对应
     for query, indexes in zip(workload.queries, indexes_per_query):
         (
             utilized_indexes_query,

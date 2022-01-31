@@ -2,10 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d42d4650-26d2-4849-9962-f24d0c7c2f75" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/selection/cost_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/cost_evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/selection/index_selection_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/index_selection_evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/selection/query_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/query_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/selection/table_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/table_generator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/algorithms/anytime_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/algorithms/anytime_algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/algorithms/auto_admin_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/algorithms/auto_admin_algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/algorithms/db2advis_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/algorithms/db2advis_algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/algorithms/extend_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/algorithms/extend_algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/algorithms/relaxation_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/algorithms/relaxation_algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/candidate_generation.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/candidate_generation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/index.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/selection/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/selection/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +47,7 @@
       <option name="presentableId" value="Default" />
       <updated>1642982580598</updated>
       <workItem from="1642982583347" duration="554000" />
+      <workItem from="1643256074654" duration="24368000" />
     </task>
     <servers />
   </component>

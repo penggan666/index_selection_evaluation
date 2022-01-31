@@ -42,6 +42,7 @@ class AnytimeAlgorithm(SelectionAlgorithm):
         logging.info("Calculating best indexes Anytime")
 
         # Generate syntactically relevant candidates
+        # 得到可索引列在max_index_width下的全排列
         candidates = candidates_per_query(
             workload,
             self.parameters["max_index_width"],
@@ -49,8 +50,10 @@ class AnytimeAlgorithm(SelectionAlgorithm):
         )
 
         # Obtain best (utilized) indexes per query
+        # 针对得到的全排列索引，对这些索引建立虚拟索引，之后生成所有query的查询计划，判断那些索引是可以被query用到的
         candidates, _ = get_utilized_indexes(workload, candidates, self.cost_evaluation)
 
+        # 将通过查询计划得到可能有用的索引再进行一次全排列
         self._add_merged_indexes(candidates)
 
         # Remove candidates that cannot meet budget requirements
@@ -101,6 +104,7 @@ class AnytimeAlgorithm(SelectionAlgorithm):
         return list(indexes)
 
     def _add_merged_indexes(self, indexes):
+        # 将index和表对应起来得到一个字典
         index_table_dict = indexes_by_table(indexes)
         for table in index_table_dict:
             for index1, index2 in itertools.permutations(index_table_dict[table], 2):

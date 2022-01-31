@@ -57,6 +57,7 @@ class DB2AdvisAlgorithm(SelectionAlgorithm):
         index_benefits_subsumed = self._combine_subsumed(index_benefits)
         selected_index_benefits = []
         disk_usage = 0
+        # 在不超过磁盘限制的情况下，按照index-per-sapce的顺序将候选索引加入到selected_index_benefits中
         for index_benefit in index_benefits_subsumed:
             if disk_usage + index_benefit.size() <= self.disk_constraint:
                 selected_index_benefits.append(index_benefit)
@@ -88,6 +89,8 @@ class DB2AdvisAlgorithm(SelectionAlgorithm):
     # by an index with a higher ratio with that index."
     # The input must be a sorted list of IndexBenefit objects.
     # E.g., the output of _calculate_index_benefits()
+    # 这个函数用于合并一些索引，首先将所有候选索引按照index-per-space进行大小排序
+    # 然后遍历查看，比如索引(a,b)和索引(a)，如果前者的index-per-space大于后者，且(a,b)的前缀包含a，那么就可以合并这两个
     def _combine_subsumed(self, index_benefits):
         # There is no point in subsuming with less than two elements
         if len(index_benefits) < 2:
@@ -118,6 +121,8 @@ class DB2AdvisAlgorithm(SelectionAlgorithm):
         # Sorting of a set results in a list
         return sorted(result_set, reverse=True)
 
+    # 这个函数的作用是，从合并后的索引中先删除掉随机个索引，再从未合并的索引集合中添加相同随机数个的索引到合并索引集合中，
+    # 看看cost是否发生了变化，如果发生了变化，就采用新的配置
     def _try_variations(self, selected_index_benefits, index_benefits, workload):
         logging.debug(f"Try variation for {self.try_variations_seconds} seconds")
         start_time = time.time()

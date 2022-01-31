@@ -30,6 +30,7 @@ def syntactically_relevant_indexes(query, max_index_width):
     for table in indexable_columns_per_table:
         columns = indexable_columns_per_table[table]
         for index_length in range(1, max_index_width + 1):
+            # 得到所有单列索引以及单列索引关于max_index_width的全排列
             possible_column_combinations |= set(
                 itertools.permutations(columns, index_length)
             )

@@ -98,6 +98,9 @@ class RelaxationAlgorithm(SelectionAlgorithm):
                         relaxed_storage_savings, cp_size - self.disk_constraint
                     )
 
+                    # 判断relaxed后的索引配置能否使得cost降低
+                    # 1. 如果能降低，那么relaxed_penalty就是降低的cost(负值)乘以节省的空间
+                    # 2. 如果不能降低（大概率是升高），那么relaxed_penalty就是降低的cost(正值)除以节省的空间
                     if relaxed_cost_increase < 0:
                         # For a (fixed) cost decrease (indicated by a negative value
                         # for relaxed_cost_increase), higher storage savings produce
@@ -122,6 +125,7 @@ class RelaxationAlgorithm(SelectionAlgorithm):
         self, input_configuration, input_configuration_by_table, transformation
     ):
         if transformation == "prefixing":
+            # prefixed就是将一个索引从后往前每次删除一个属性列来得到前缀，比如I(a,b,c)，可以先后得到I(a,b)和I(a)
             for index in input_configuration:
                 for prefix in index.prefixes():
                     relaxed = input_configuration.copy()
@@ -133,17 +137,20 @@ class RelaxationAlgorithm(SelectionAlgorithm):
                         relaxed_storage_savings -= prefix.estimated_size
                     yield relaxed, relaxed_storage_savings
         elif transformation == "removal":
+            # removal就是随机删除掉一个索引
             for index in input_configuration:
                 relaxed = input_configuration.copy()
                 relaxed.remove(index)
                 yield relaxed, index.estimated_size
         elif transformation == "merging":
+            # merging就是将两个索引进行结合，比如将I(a,b)和I(a,b,c)，可以将这两个索引merge为I(a,b,c)
             for table in input_configuration_by_table:
                 for index1, index2 in itertools.permutations(
                     input_configuration_by_table[table], 2
                 ):
                     relaxed = input_configuration.copy()
                     merged_index = index_merge(index1, index2)
+                    # 如果merge后的索引超出了最大长度索引限制，那么就截断
                     if len(merged_index.columns) > self.max_index_width:
                         new_columns = merged_index.columns[: self.max_index_width]
                         merged_index = Index(new_columns)
@@ -158,6 +165,8 @@ class RelaxationAlgorithm(SelectionAlgorithm):
                         relaxed_storage_savings -= merged_index.estimated_size
                     yield relaxed, relaxed_storage_savings
         elif transformation == "splitting":
+            # splitting就是将两个索引进行分割，那么如果两个索引没有交集，那么就不用分割，比如I(a,b)和I(c,d)
+            # 如果两个索引有交集，比如I(a,c)和I(a,b)，那么就将这两个索引分割为三个索引，分别是两个索引的交集I(a)，还有差集I(c)和I(b)
             for table in input_configuration_by_table:
                 for index1, index2 in itertools.permutations(
                     input_configuration_by_table[table], 2

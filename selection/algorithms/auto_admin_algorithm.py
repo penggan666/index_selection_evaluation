@@ -42,9 +42,12 @@ class AutoAdminAlgorithm(SelectionAlgorithm):
             return []
 
         # Set potential indexes for first iteration
+        # potential_index就是出现在workload中的所有列
         potential_indexes = workload.potential_indexes()
         for current_max_index_width in range(1, self.max_index_width + 1):
+            # 先针对workload中的每一个query做一次enumerate_combinations，目的是为了减少potential_index的范围
             candidates = self.select_index_candidates(workload, potential_indexes)
+            # 再根据上一步的得到的结果，对整体的work_load做一次enumerate_combinations
             indexes = self.enumerate_combinations(workload, candidates)
             assert indexes <= candidates, "Indexes must be a subset of candidate indexes"
 
@@ -136,6 +139,7 @@ class AutoAdminAlgorithm(SelectionAlgorithm):
         assert (
             current_indexes & candidate_indexes == set()
         ), "Intersection of current and candidate indexes must be empty"
+        # 如果通过枚举得到的索引已经满足要求了，那么就不再使用贪婪算法继续进行搜索了
         if len(current_indexes) >= number_indexes:
             return current_indexes, current_costs
 
@@ -148,6 +152,7 @@ class AutoAdminAlgorithm(SelectionAlgorithm):
             cost = self._simulate_and_evaluate_cost(workload, current_indexes | {index})
             if not best_index[0] or cost < best_index[1]:
                 best_index = (index, cost)
+        #如果在当前索引配置下（current_index），能够继续搜索到是的cost降低的索引，那么就把这个索引加入到current_index中，再继续进行贪婪搜索
         if best_index[0] and best_index[1] < current_costs:
             current_indexes.add(best_index[0])
             candidate_indexes.remove(best_index[0])
